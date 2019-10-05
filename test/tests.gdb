@@ -29,41 +29,54 @@
 
 # Add tests below
 
-test "PINB: 0xFF => PORTC: 0x00"
-setPINB 0xFF
-continue 5
-expectPORTC 0x00
+test "PINA: 0x0F => PORTC: 0x80"
+setPINA 0x0F
+continue 10
+expectPORTC 0x80
 checkResult
+printPORTC
 
-test "PINB: 0x00 => PORTC: 0x04"
-setPINB 0x00
+test "PINA: 0x00 -> PORTC: 0x04"
+setPINA 0x00
 continue 5
 expectPORTC 0x04
 checkResult
+printPORTC
 
-test "PINB: 0x07 => PORTC: 0x03"
-setPINB 0x07
-continue 5
-expectPORTC 0x03
-checkResult
 
-test "PINB: 0x09 => PORTC: 0x02"
-setPINB 0x09
-continue 5
-expectPORTC 0x02
-checkResult
-
-test "PINB: 0x0B => PORTC: 0x01"
-setPINB 0x0B
+test "PINA: 0x0D -> PORTC: 0x01"
+setPINA 0x0D
 continue 5
 expectPORTC 0x01
 checkResult
 
-test "PINB: 0x06 => PORTC: 0x02"
-setPINB 0x06
+
+test "PINA: 0xF4 -> PORTC: 0x03"
+setPINA 0xF4
 continue 5
-expect PORTC 0x02
+expectPORTC 0x03
 checkResult
+
+test "PINA: 0x01 -> PORTC: 0x03"
+setPINA 0x01
+continue 5
+expectPORTC 0x03
+checkResult
+
+
+test "PINA: 0x09 -> PORTC: 0x02"
+setPINA 0x09
+continue 5
+expectPORTC 0x02
+checkResult
+
+
+test "PINA: 0x0E -> PORTC: 0x01"
+setPINA 0x0E
+continue 5
+expectPORTC 0x01
+checkResult
+
 
  set $passed=$tests-$failed
  eval "shell echo Passed %d/%d tests.\n",$passed,$tests

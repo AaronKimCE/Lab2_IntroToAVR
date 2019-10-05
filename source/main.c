@@ -12,27 +12,28 @@
 #include "simAVRHeader.h"
 #endif
 
-// Part 2 - Parking space sensor
+// Part 3 - Parking space sensor w/ full light
 int main(void) { 
-    DDRB = 0x00; PORTB = 0xFF; // Port A becomes inputs
+    DDRA = 0x00; PORTA = 0xFF; // Port A becomes inputs
     DDRC = 0xFF; PORTC = 0x00; // Port C becomes outputs init 0
     unsigned char cntavail = 0x00;
-    unsigned char tmpA = 0x00; // Temporary variables to hold C and A
+    unsigned char tmpA = 0x00; // Temporary variables to hold B and A
     while (1) {
-      //Read Input & Reset count of cars
-      cntavail = 0x00;
-      tmpA = PINB;
-      if ((tmpA & 0x01) != 0x01 ) {// Checking spot 1
-        ++cntavail;  // Incrementing available spots
+      //Read Input
+      tmpA = PINA & 0x0F;
+      if (tmpA == 0x00) {// checking spots
+        cntavail = 4;  // 4 open
       }
-      if ((tmpA & 0x02) != 0x02 ) {// spot 2
-        ++cntavail;
+      else if (tmpA == 0x01 || tmpA == 0x02 || tmpA == 0x04 || tmpA == 0x08) {//3 open
+        cntavail = 3;
       }
-      if ((tmpA & 0x04) != 0x04 ) {// spot 3
-        ++cntavail;
+      else if (tmpA == 0x03 || tmpA == 0x06 || tmpA == 0x0C || tmpA == 0x05 || tmpA == 0x0A || tmpA == 0x09) {// 2 open
+        cntavail = 2;
       }
-      if ((tmpA & 0x08) != 0x08 ) {// spot 4
-        ++cntavail;
+      else if (tmpA == 0x07 || tmpA == 0x0E || tmpA == 0x0B || tmpA == 0x0D ) {// 1 open
+        cntavail = 1;
+      } else {
+        cntavail = 0x80;  //Lot full
       }
       //Write output
       PORTC = cntavail;
